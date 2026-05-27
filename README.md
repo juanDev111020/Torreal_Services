@@ -38,6 +38,12 @@ No necesitas instalar Node, Java ni Maven para usar el proyecto en otra PC.
 
 Más detalle: [DOCKER.md](DOCKER.md).
 
+## Trabajo en equipo (Git Flow)
+
+Ramas: **`master`** (estable) · **`develop`** (integración) · **`Dev1`** / **`Dev2`** (cada desarrollador).
+
+Guía completa: [GITFLOW.md](GITFLOW.md)
+
 ---
 
 ## Desarrollo con código en el host (opcional)
