@@ -1,0 +1,53 @@
+<div class="admin-page">
+  <header class="admin-page-header">
+    <h1>CV's — Postulaciones</h1>
+    <p>Hojas de vida y datos de quienes aplicaron.</p>
+  </header>
+
+  @if (cargando()) {
+    <p class="admin-estado">Cargando…</p>
+  } @else if (error(); as err) {
+    <p class="admin-alerta admin-alerta--error">{{ err }}</p>
+  } @else {
+    <div class="admin-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Fecha</th>
+            <th>CV</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of lista(); track p.id) {
+            <tr>
+              <td>{{ p.nombreCompleto }}</td>
+              <td><a [href]="'mailto:' + p.correo">{{ p.correo }}</a></td>
+              <td>{{ p.fechaEnvio ? (p.fechaEnvio | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+              <td>
+                @if (p.archivoCvUrl && cvDisponible(p)) {
+                  <button
+                    type="button"
+                    class="admin-btn admin-btn--prim"
+                    [disabled]="abriendoCvId() === p.id"
+                    (click)="verCv(p)">
+                    {{ abriendoCvId() === p.id ? 'Abriendo…' : 'Ver PDF' }}
+                  </button>
+                } @else if (p.archivoCvUrl) {
+                  <span class="admin-pill admin-pill--warn" title="Ruta en BD sin archivo en disco"
+                    >PDF no encontrado</span
+                  >
+                } @else {
+                  <span class="admin-pill admin-pill--warn">Sin archivo</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="4">No hay postulaciones registradas.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,129 @@
+<div class="perfil-empleado-page">
+  @if (perfilRes.isLoading()) {
+    <div class="perfil-estado perfil-estado--carga" aria-busy="true">
+      <div class="perfil-skeleton-hero"></div>
+      <div class="perfil-skeleton-grid">
+        <div class="perfil-skeleton-card"></div>
+        <div class="perfil-skeleton-card"></div>
+        <div class="perfil-skeleton-card"></div>
+      </div>
+      <p class="perfil-estado-texto">Cargando tu perfil…</p>
+    </div>
+  } @else if (errorCarga(); as err) {
+    <div class="perfil-alerta perfil-alerta--error" role="alert">
+      <p>{{ err }}</p>
+    </div>
+  } @else if (perfilRes.value(); as p) {
+    <header class="perfil-hero">
+      <div class="perfil-hero-avatar" aria-hidden="true">{{ iniciales(p.nombreCompleto) }}</div>
+      <div class="perfil-hero-contenido">
+        <p class="perfil-hero-etiqueta">Información del perfil</p>
+        <h1 class="perfil-hero-nombre">{{ p.nombreCompleto }}</h1>
+        <div class="perfil-hero-badges">
+          <span class="perfil-badge perfil-badge--rol">{{ rolEtiqueta() }}</span>
+          @if (!esCuentaActiva(p)) {
+            <span class="perfil-badge perfil-badge--inactivo">Inactivo</span>
+          } @else {
+            <span class="perfil-badge perfil-badge--activo">Activo</span>
+          }
+        </div>
+      </div>
+    </header>
+
+    @if (!esCuentaActiva(p)) {
+      <div class="perfil-alerta perfil-alerta--inactivo" role="status">
+        <p>
+          Tu cuenta está <strong>inactiva</strong>. No recibirás nuevas asignaciones de servicios hasta
+          que un administrador reactive tu acceso.
+        </p>
+      </div>
+    }
+
+    <div class="perfil-grid">
+      <section class="perfil-card">
+        <div class="perfil-card-cabecera">
+          <span class="perfil-card-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <path d="m22 6-10 7L2 6" />
+            </svg>
+          </span>
+          <h2>Contacto</h2>
+        </div>
+        <dl class="perfil-datos">
+          <div class="perfil-dato">
+            <dt>Correo electrónico</dt>
+            <dd>
+              <a class="perfil-enlace" [href]="'mailto:' + p.email">{{ p.email }}</a>
+            </dd>
+          </div>
+          <div class="perfil-dato">
+            <dt>Teléfono</dt>
+            <dd>
+              @if (p.telefono) {
+                <a class="perfil-enlace" [href]="'tel:' + p.telefono">{{ p.telefono }}</a>
+              } @else {
+                <span class="perfil-vacio">No registrado</span>
+              }
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="perfil-card">
+        <div class="perfil-card-cabecera">
+          <span class="perfil-card-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 7h-9M14 17H5M15 3l4 8-4 8M9 21l-4-8 4-8" />
+            </svg>
+          </span>
+          <h2>Información laboral</h2>
+        </div>
+        <dl class="perfil-datos">
+          <div class="perfil-dato">
+            <dt>Especialidad</dt>
+            <dd>{{ p.especialidad || '—' }}</dd>
+          </div>
+          <div class="perfil-dato">
+            <dt>Estado laboral</dt>
+            <dd>
+              <span
+                class="perfil-estado-pill"
+                [class.perfil-estado-pill--activo]="esEstadoActivo(p.estadoLaboral)">
+                {{ etiquetaEstadoLaboral(p.estadoLaboral) }}
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="perfil-card perfil-card--cuenta">
+        <div class="perfil-card-cabecera">
+          <span class="perfil-card-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </span>
+          <h2>Cuenta en Torreal</h2>
+        </div>
+        <dl class="perfil-datos">
+          <div class="perfil-dato">
+            <dt>Rol en el sistema</dt>
+            <dd>{{ rolEtiqueta() }}</dd>
+          </div>
+          <div class="perfil-dato">
+            <dt>Acceso</dt>
+            <dd>Panel de empleado · gestión de agenda</dd>
+          </div>
+        </dl>
+        <a routerLink="/empleado/calendario" class="perfil-cta">
+          <span>Ir al calendario de trabajo</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </section>
+    </div>
+  }
+</div>

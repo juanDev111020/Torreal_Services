@@ -8,6 +8,14 @@
 
 # Node
 /node_modules
+/server/node_modules
+/server/.env
+.env
+
+# Java / Spring Boot
+/torreal-api/target/
+server/uploads/cv/*
+!server/uploads/cv/.gitkeep
 npm-debug.log
 yarn-error.log
 

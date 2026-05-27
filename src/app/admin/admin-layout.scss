@@ -1,0 +1,35 @@
+@use '../shared/portal-layout';
+
+.token-registro-widget {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-right: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.82rem;
+}
+
+.token-registro-label {
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.token-registro-codigo {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 0.15rem 0.45rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+.token-registro-timer {
+  font-size: 0.78rem;
+  opacity: 0.9;
+  white-space: nowrap;
+}

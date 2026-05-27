@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
+
+// --- 1. VARIABLES DE MARCA (COLORES) ---
+// Define estos colores una vez y úsalos en todo el proyecto.
+$color-brand-blue: #1e3a8a; // Un azul marino para la marca
+$color-text-dark: #333333; // Texto principal
+$color-text-light: #777777; // Texto secundario / párrafos
+$color-bg-light: #f9fafb; // Fondo gris muy claro para contraste
+$color-white: #ffffff;
+$color-accent: #2563eb; // Un azul más vivo para enlaces/botones
+
+// --- 2. ESTILOS GLOBALES RESETS ---
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; // O la fuente que prefieras
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $color-text-dark;
+  background-color: $color-white;
+  line-height: 1.6;
+}
+
+// Clases de utilidad globales
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+ul {
+  list-style: none;
+}

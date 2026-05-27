@@ -1,0 +1,25 @@
+# Solo MySQL (desarrollo local con npm run api:java + ng serve).
+# Stack completo (MySQL + API + web): usar docker-compose.yml en la raíz del proyecto.
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: torreal_mysql_dev
+    restart: always
+    environment:
+      # Definimos las credenciales
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: torreal_db
+      MYSQL_USER: torreal_admin
+      MYSQL_PASSWORD: admin123
+    ports:
+      # Puerto de tu PC : Puerto del contenedor
+      - "3308:3306"
+    volumes:
+      # Persistencia: No perder los datos al apagar Docker
+      - db_data:/var/lib/mysql
+      # Ejecución automática: Carga el script SQL al iniciar por primera vez
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+
+volumes:
+  db_data:

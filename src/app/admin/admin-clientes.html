@@ -1,0 +1,58 @@
+<div class="admin-page">
+  <header class="admin-page-header">
+    <h1>Lista de clientes</h1>
+    <p>Clientes inactivos no pueden agendar servicios.</p>
+  </header>
+
+  @if (mensaje(); as msg) {
+    <p class="admin-alerta admin-alerta--ok">{{ msg }}</p>
+  }
+  @if (cargando()) {
+    <p class="admin-estado">Cargando…</p>
+  } @else if (error(); as err) {
+    <p class="admin-alerta admin-alerta--error">{{ err }}</p>
+  } @else {
+    <div class="admin-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Reservas</th>
+            <th>Activas</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of lista(); track c.idCliente) {
+            <tr>
+              <td>{{ c.nombreCompleto }}</td>
+              <td>{{ c.email }}</td>
+              <td>{{ c.tipoCliente || '—' }}</td>
+              <td>
+                <span class="admin-pill" [class.admin-pill--ok]="c.activo" [class.admin-pill--bad]="!c.activo">
+                  {{ c.estado }}
+                </span>
+              </td>
+              <td>{{ c.totalAgendamientos }}</td>
+              <td>{{ c.agendamientosActivos }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="admin-btn"
+                  [disabled]="procesandoId() === c.idCliente"
+                  (click)="alternarEstado(c)">
+                  {{ c.activo ? 'Desactivar' : 'Activar' }}
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="7">No hay clientes registrados.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,41 @@
+<div class="admin-page">
+  <header class="admin-page-header">
+    <h1>Agendamientos</h1>
+    <p>Todos los servicios reservados por los clientes.</p>
+  </header>
+
+  @if (cargando()) {
+    <p class="admin-estado">Cargando…</p>
+  } @else if (error(); as err) {
+    <p class="admin-alerta admin-alerta--error">{{ err }}</p>
+  } @else {
+    <div class="admin-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Empleado</th>
+            <th>Servicio</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of lista(); track a.id) {
+            <tr>
+              <td>{{ a.clienteNombre }}</td>
+              <td>{{ a.empleadoNombre || '—' }}</td>
+              <td>{{ a.servicioNombre }}</td>
+              <td>{{ a.fechaInicio | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ a.fechaFin | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td><span [class]="claseEstadoAgendamiento(a)">{{ a.estado }}</span></td>
+            </tr>
+          } @empty {
+            <tr><td colspan="6">No hay agendamientos registrados.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,80 @@
+# Torreal — stack completo (MySQL + API + Angular/nginx)
+# Uso recomendado: doble clic en Torreal-Iniciar.cmd o: docker compose up -d --build
+# App: http://127.0.0.1:4200  (no hace falta npm start ni mvn)
+
+name: torreal_service
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: torreal_mysql
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: torreal_db
+      MYSQL_USER: ${DB_USER:-torreal_admin}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-admin123}
+    ports:
+      - "${DB_HOST_PORT:-3308}:3306"
+    volumes:
+      - torreal_mysql_data:/var/lib/mysql
+      - ./database/docker:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
+  api:
+    build:
+      context: ./torreal-api
+      dockerfile: Dockerfile
+    container_name: torreal_api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_NAME: torreal_db
+      DB_USER: ${DB_USER:-torreal_admin}
+      DB_PASSWORD: ${DB_PASSWORD:-admin123}
+      JWT_SECRET: ${JWT_SECRET:-torreal-docker-cambia-esto-en-produccion}
+      JWT_EXPIRES_DAYS: ${JWT_EXPIRES_DAYS:-7}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200,http://localhost,http://127.0.0.1:4200}
+      TORREAL_UPLOADS_DIR: /app/uploads
+    volumes:
+      - torreal_uploads:/app/uploads
+    ports:
+      - "${API_HOST_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 120s
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    container_name: torreal_web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_HOST_PORT:-4200}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  torreal_mysql_data:
+  torreal_uploads:

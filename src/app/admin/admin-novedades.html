@@ -1,0 +1,89 @@
+<div class="admin-page">
+  <header class="admin-page-header">
+    <h1>Agregar novedades</h1>
+    <p></p>
+  </header>
+
+  @if (mensaje(); as msg) {
+    <p
+      class="admin-alerta"
+      [class.admin-alerta--error]="mensajeEsError()"
+      [class.admin-alerta--ok]="!mensajeEsError()">
+      {{ msg }}
+    </p>
+  }
+
+  <div class="admin-card form-novedad">
+    <h2>Nueva novedad</h2>
+    <label class="campo">
+      <span>Título</span>
+      <input type="text" [(ngModel)]="titulo" placeholder="Ej. Oportunidad de trabajo" />
+    </label>
+    <label class="campo">
+      <span>Descripción</span>
+      <textarea [(ngModel)]="contenido" rows="3" placeholder="Texto que verán los visitantes"></textarea>
+    </label>
+    <label class="campo">
+      <span>Imagen</span>
+      <input type="file" accept="image/*" (change)="onImagen($event)" />
+      @if (nombreImagen) {
+        <small>{{ nombreImagen }}</small>
+      }
+    </label>
+    <button type="button" class="admin-btn admin-btn--prim" [disabled]="enviando()" (click)="publicar()">
+      {{ enviando() ? 'Publicando…' : 'Publicar novedad' }}
+    </button>
+  </div>
+
+  <h2 class="subtitulo">Novedades publicadas</h2>
+  @if (cargando()) {
+    <p class="admin-estado">Cargando…</p>
+  } @else {
+    <div class="grid-preview">
+      @for (n of lista(); track n.id) {
+        <article class="preview-card">
+          <div class="preview-img">
+            <img [src]="urlImagen(n.imagenUrl)" [alt]="n.titulo" />
+          </div>
+          <div class="preview-body">
+            <h3>{{ n.titulo }}</h3>
+            <p>{{ n.contenido }}</p>
+            <button type="button" class="admin-btn admin-btn--danger" (click)="abrirModalEliminar(n)">
+              Eliminar
+            </button>
+          </div>
+        </article>
+      } @empty {
+        <p class="admin-estado">Aún no hay novedades dinámicas.</p>
+      }
+    </div>
+  }
+
+  @if (modalEliminarAbierto()) {
+    <div class="modal-backdrop" (click)="cerrarModalEliminar()">
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="titulo-eliminar" (click)="$event.stopPropagation()">
+        <header class="modal-header">
+          <h3 id="titulo-eliminar">Eliminar novedad</h3>
+          <p>Esta acción no se puede deshacer.</p>
+        </header>
+
+        <div class="modal-body">
+          <p>
+            Vas a eliminar la novedad
+            <strong>"{{ novedadAEliminar()?.titulo }}"</strong>.
+          </p>
+          <p class="modal-ayuda">Se retirará del inicio inmediatamente para todos los usuarios.</p>
+        </div>
+
+        <footer class="modal-actions">
+          <button type="button" class="admin-btn" [disabled]="eliminando()" (click)="cerrarModalEliminar()">
+            Cancelar
+          </button>
+          <button type="button" class="admin-btn admin-btn--danger modal-btn-danger" [disabled]="eliminando()" (click)="confirmarEliminar()">
+            {{ eliminando() ? 'Eliminando…' : 'Sí, eliminar' }}
+          </button>
+        </footer>
+      </section>
+    </div>
+  }
+</div>

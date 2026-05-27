@@ -1,0 +1,60 @@
+<div class="admin-page">
+  <header class="admin-page-header">
+    <h1>Lista de empleados</h1>
+    <p></p>
+  </header>
+
+  @if (mensaje(); as msg) {
+    <p class="admin-alerta admin-alerta--ok">{{ msg }}</p>
+  }
+  @if (cargando()) {
+    <p class="admin-estado">Cargando…</p>
+  } @else if (error(); as err) {
+    <p class="admin-alerta admin-alerta--error">{{ err }}</p>
+  } @else {
+    <div class="admin-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Estado cuenta</th>
+            <th>Disponibilidad</th>
+            <th>Reservas activas</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of lista(); track e.id) {
+            <tr>
+              <td>{{ e.nombreCompleto }}</td>
+              <td>{{ e.especialidad || '—' }}</td>
+              <td>
+                <span class="admin-pill" [class.admin-pill--ok]="e.activo" [class.admin-pill--bad]="!e.activo">
+                  {{ e.estadoLaboral }}
+                </span>
+              </td>
+              <td>
+                <span class="admin-pill" [class.admin-pill--warn]="e.ocupado" [class.admin-pill--ok]="!e.ocupado">
+                  {{ e.ocupado ? 'Ocupado' : 'Libre' }}
+                </span>
+              </td>
+              <td>{{ e.agendamientosActivos }} / {{ e.totalAgendamientos }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="admin-btn"
+                  [disabled]="procesandoId() === e.id"
+                  (click)="alternarEstado(e)">
+                  {{ e.activo ? 'Desactivar' : 'Activar' }}
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="6">No hay empleados registrados.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

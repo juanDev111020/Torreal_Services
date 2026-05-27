@@ -1,0 +1,313 @@
+<main class="acceso-page">
+
+  <div class="acceso-card">
+
+    <a routerLink="/" class="acceso-back">← Volver al inicio</a>
+
+
+
+    <div class="acceso-tabs" role="tablist">
+
+      <button
+
+        type="button"
+
+        class="tab"
+
+        [class.active]="vista() === 'login'"
+
+        (click)="vista.set('login')"
+
+        role="tab"
+
+        [attr.aria-selected]="vista() === 'login'">
+
+        Iniciar sesión
+
+      </button>
+
+      <button
+
+        type="button"
+
+        class="tab"
+
+        [class.active]="vista() === 'registro'"
+
+        (click)="vista.set('registro')"
+
+        role="tab"
+
+        [attr.aria-selected]="vista() === 'registro'">
+
+        Registrarse
+
+      </button>
+
+    </div>
+
+
+
+    @if (vista() === 'login') {
+
+      <section class="panel" aria-label="Inicio de sesión">
+
+        <h1 class="panel-title">Acceso clientes y personal</h1>
+
+        @if (mensajeOkRegistro(); as ok) {
+
+          <p class="msg ok">{{ ok }}</p>
+
+        }
+
+        <form class="form-grid" [formGroup]="loginForm" (ngSubmit)="enviarLogin()">
+
+          <label class="field">
+
+            <span class="field-label">Correo electrónico</span>
+
+            <input type="email" formControlName="email" autocomplete="email">
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">Contraseña</span>
+
+            <input type="password" formControlName="password" autocomplete="current-password">
+
+          </label>
+
+          @if (mensajeLogin(); as err) {
+
+            <p class="msg err">{{ err }}</p>
+
+          }
+
+          <button type="submit" class="btn-primary" [disabled]="cargandoLogin()">
+
+            {{ cargandoLogin() ? 'Entrando…' : 'Entrar' }}
+
+          </button>
+
+        </form>
+
+      </section>
+
+    } @else {
+
+      <section class="panel" aria-label="Registro de cliente">
+
+        <h1 class="panel-title">Registro de cliente</h1>
+
+        <p class="panel-hint"></p>
+
+        <form class="form-grid" [formGroup]="registroForm" (ngSubmit)="enviarRegistro()">
+
+          <fieldset class="rol-fieldset">
+
+            <legend>Tipo de cliente</legend>
+
+            <label class="radio-line">
+
+              <input type="radio" formControlName="tipoCliente" value="natural">
+
+              Persona natural
+
+            </label>
+
+            <label class="radio-line">
+
+              <input type="radio" formControlName="tipoCliente" value="propiedad_horizontal">
+
+              Propiedad horizontal
+
+            </label>
+
+          </fieldset>
+
+
+
+          <label class="field">
+
+            @if (registroForm.controls.tipoCliente.value === 'propiedad_horizontal') {
+
+              <span class="field-label">Nombre de la propiedad horizontal</span>
+
+            } @else {
+
+              <span class="field-label">Nombre y apellido completo</span>
+
+            }
+
+            <input type="text" formControlName="nombreCompleto" autocomplete="name">
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">Correo electrónico</span>
+
+            <input type="email" formControlName="email" autocomplete="email">
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">Contraseña</span>
+
+            <input type="password" formControlName="password" autocomplete="new-password" maxlength="16">
+
+            <span class="field-hint">Entre 8 y 16 caracteres, al menos una mayúscula (A-Z).</span>
+
+            @if (mensajeErrorPassword(); as hp) {
+
+              <span class="field-error">{{ hp }}</span>
+
+            }
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">Confirmar contraseña</span>
+
+            <input type="password" formControlName="confirmPassword" autocomplete="new-password" maxlength="16">
+
+            @if (mensajeErrorConfirmPassword(); as hc) {
+
+              <span class="field-error">{{ hc }}</span>
+
+            }
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">Teléfono</span>
+
+            <input
+
+              type="tel"
+
+              formControlName="telefono"
+
+              autocomplete="tel"
+
+              maxlength="10"
+
+              inputmode="numeric"
+
+              (input)="sanitizarTelefono()">
+
+            @if (mensajeErrorTelefono(); as ht) {
+
+              <span class="field-error">{{ ht }}</span>
+
+            }
+
+          </label>
+
+
+
+          <label class="field">
+
+            <span class="field-label">Dirección</span>
+
+            <input type="text" formControlName="direccion" autocomplete="street-address">
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">NIT / identificación PH</span>
+
+            <input
+
+              type="text"
+
+              formControlName="nitPh"
+
+              inputmode="text"
+
+              maxlength="22"
+
+              autocomplete="off"
+
+              [placeholder]="
+
+                registroForm.controls.tipoCliente.value === 'natural'
+
+                  ? 'No aplica para persona natural'
+
+                  : '890.903.938 - 8'
+
+              ">
+
+            @if (registroForm.controls.tipoCliente.value === 'propiedad_horizontal') {
+
+              <span class="field-hint">
+
+                Base de 9 a 10 dígitos (puedes usar puntos), un guion y el dígito de verificación (DV).
+
+              </span>
+
+            }
+
+            @if (mensajeErrorNitPh(); as hn) {
+
+              <span class="field-error">{{ hn }}</span>
+
+            }
+
+          </label>
+
+          <label class="field">
+
+            <span class="field-label">Persona de contacto</span>
+
+            <input
+
+              type="text"
+
+              formControlName="personaContacto"
+
+              [placeholder]="
+
+                registroForm.controls.tipoCliente.value === 'natural'
+
+                  ? 'No aplica para persona natural'
+
+                  : 'Opcional'
+
+              ">
+
+          </label>
+
+
+
+          @if (mensajeRegistro(); as err) {
+
+            <p class="msg err">{{ err }}</p>
+
+          }
+
+
+
+          <button type="submit" class="btn-primary" [disabled]="cargandoRegistro()">
+
+            {{ cargandoRegistro() ? 'Registrando…' : 'Registrarse' }}
+
+          </button>
+
+        </form>
+
+      </section>
+
+    }
+
+  </div>
+
+</main>
+
+

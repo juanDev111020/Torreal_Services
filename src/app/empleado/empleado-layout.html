@@ -1,0 +1,54 @@
+<div class="portal-shell">
+  <aside class="portal-sidebar">
+    <div class="sidebar-logo">
+      <img src="images/Logo_color.png" alt="Torreal S.A.S" width="160" height="auto" />
+    </div>
+    <p class="sidebar-bienvenida">Bienvenido, <strong>{{ nombreBienvenida() }}</strong></p>
+    <nav class="sidebar-nav" aria-label="Módulo empleado">
+      <a routerLink="/empleado/perfil" routerLinkActive="active" class="nav-item">Información del perfil</a>
+      <a routerLink="/empleado/calendario" routerLinkActive="active" class="nav-item">Calendario de trabajo</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a routerLink="/" class="sidebar-link-inicio">← Volver al inicio</a>
+    </div>
+  </aside>
+
+  <div class="portal-columna">
+    <header class="portal-header">
+      <div class="header-spacer"></div>
+      <div class="header-acciones">
+        <button
+          type="button"
+          class="btn-icon-gear"
+          (click)="alternarMenuPerfil($event)"
+          aria-haspopup="true"
+          [attr.aria-expanded]="menuPerfilAbierto()">
+          <span class="sr-only">Menú de perfil</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.09.31.13.65.13 1s-.04.69-.13 1a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+        @if (menuPerfilAbierto()) {
+          <div class="menu-perfil-popover" role="menu">
+            <p class="menu-perfil-titulo">Empleado</p>
+            <button type="button" class="btn-cerrar-sesion" (click)="cerrarSesion()">Cerrar sesión</button>
+          </div>
+        }
+      </div>
+    </header>
+
+    <main class="portal-main">
+      <router-outlet />
+    </main>
+  </div>
+</div>

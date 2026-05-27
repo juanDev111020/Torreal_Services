@@ -1,0 +1,372 @@
+$azul-marca: #003399;
+$azul-oscuro: #16245d;
+$azul-claro: #2563eb;
+$fondo-pagina: #f0f4fa;
+$borde-card: #d8deea;
+$sombra-card: 0 8px 28px rgba(22, 36, 93, 0.1);
+
+.agendar-page {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 3rem;
+  min-height: 100%;
+  background: $fondo-pagina;
+}
+
+.agendar-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.agendar-page-etiqueta {
+  margin: 0 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $azul-claro;
+}
+
+.agendar-page-titulo {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: $azul-oscuro;
+}
+
+.agendar-page-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.agendar-alerta {
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+
+  p {
+    margin: 0;
+  }
+
+  &--error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+  }
+}
+
+.agendar-form-card {
+  background: #fff;
+  border: 1px solid $borde-card;
+  border-radius: 18px;
+  padding: 1.75rem 2rem 2rem;
+  box-shadow: $sombra-card;
+}
+
+.agendar-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+}
+
+.agendar-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.agendar-bloque {
+  padding-bottom: 0.25rem;
+}
+
+.agendar-bloque-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: $azul-oscuro;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.agendar-bloque-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #eef3ff;
+  color: $azul-marca;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.agendar-field {
+  display: block;
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: #1f2937;
+    background: #fff;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $azul-claro;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+  }
+
+  input:read-only,
+  select:disabled {
+    background: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+  }
+
+  input[type='date'] {
+    cursor: pointer;
+  }
+}
+
+.agendar-field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+}
+
+.agendar-field-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+.agendar-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eef1f6;
+}
+
+.agendar-btn-prim,
+.agendar-btn-sec {
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.agendar-btn-prim {
+  background: $azul-marca;
+  border: none;
+  color: #fff;
+
+  &:not(:disabled):hover {
+    background: #002b7a;
+    transform: translateY(-1px);
+  }
+}
+
+.agendar-btn-sec {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+
+  &:not(:disabled):hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+  }
+}
+
+// —— Modal ——
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 3000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-confirm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3001;
+  width: min(680px, 94vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 24px 64px rgba(22, 36, 93, 0.25);
+  padding: 1.75rem 2rem 1.5rem;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.modal-titulo {
+  margin: 0 0 0.35rem;
+  color: $azul-oscuro;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.modal-subtitulo {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #6b7280;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-col--fechas {
+  padding: 1rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #eef1f6;
+}
+
+.modal-seccion {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $azul-marca;
+}
+
+.modal-linea {
+  margin: 0.4rem 0;
+  font-size: 0.92rem;
+  color: #374151;
+  line-height: 1.45;
+
+  &--destacada {
+    font-weight: 700;
+    color: $azul-oscuro;
+    font-size: 1rem;
+  }
+}
+
+.modal-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+  margin-bottom: 0.1rem;
+}
+
+.modal-costo {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  background: linear-gradient(135deg, #eef3ff, #f0f4ff);
+  border-radius: 12px;
+  border: 1px solid #c7d7f5;
+}
+
+.modal-costo-valor {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: $azul-marca;
+}
+
+.modal-costo-detalle {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.modal-costo-aviso {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #fef2f2;
+  font-size: 0.88rem;
+  color: #b91c1c;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .agendar-page {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .agendar-form-card {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .agendar-form-grid,
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agendar-form-actions {
+    flex-direction: column-reverse;
+
+    .agendar-btn-prim,
+    .agendar-btn-sec {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

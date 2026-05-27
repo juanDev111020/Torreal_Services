@@ -1,0 +1,211 @@
+<section class="agendar-page">
+  <header class="agendar-page-header">
+    <div>
+      <p class="agendar-page-etiqueta">Reserva en línea</p>
+      <h1 class="agendar-page-titulo">Agendar servicio</h1>
+      <p class="agendar-page-desc">Completa el formulario y confirma los datos antes de enviar.</p>
+    </div>
+  </header>
+
+  @if (mensajeError(); as err) {
+    <div class="agendar-alerta agendar-alerta--error" role="alert">
+      <p>{{ err }}</p>
+    </div>
+  }
+
+  <form class="agendar-form-card" [formGroup]="form" (ngSubmit)="abrirConfirmacion()">
+    <div class="agendar-form-grid">
+      <div class="agendar-col">
+        <div class="agendar-bloque">
+          <h2 class="agendar-bloque-titulo">
+            <span class="agendar-bloque-icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+              </svg>
+            </span>
+            Servicio y contacto
+          </h2>
+          <label class="agendar-field">
+            <span class="agendar-field-label">Servicio</span>
+            <select formControlName="idServicio" [disabled]="cargandoServicios()">
+              <option value="">Seleccione un servicio</option>
+              @for (s of servicios(); track s.id) {
+                <option [value]="s.id">{{ s.nombre }}</option>
+              }
+            </select>
+          </label>
+          <label class="agendar-field">
+            <span class="agendar-field-label">Correo electrónico</span>
+            <input
+              type="email"
+              formControlName="correo"
+              placeholder="Correo electrónico"
+              autocomplete="email"
+              readonly />
+          </label>
+        </div>
+
+        <div class="agendar-bloque">
+          <h2 class="agendar-bloque-titulo">
+            <span class="agendar-bloque-icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
+              </svg>
+            </span>
+            Horario de trabajo (cada día)
+          </h2>
+          <label class="agendar-field">
+            <span class="agendar-field-label">Hora de inicio del turno</span>
+            <select formControlName="horaInicio">
+              @for (h of horariosOpciones; track h.value) {
+                <option [value]="h.value">{{ h.label }}</option>
+              }
+            </select>
+          </label>
+          <label class="agendar-field">
+            <span class="agendar-field-label">Hora de fin del turno</span>
+            <select formControlName="horaFin">
+              @for (h of horariosOpciones; track h.value) {
+                <option [value]="h.value">{{ h.label }}</option>
+              }
+            </select>
+            <span class="agendar-field-hint">8:00 a.m.–12:00 p.m. o 2:00 p.m.–6:00 p.m., solo en punto y media.</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="agendar-col">
+        <div class="agendar-bloque">
+          <h2 class="agendar-bloque-titulo">
+            <span class="agendar-bloque-icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </span>
+            Tus datos
+          </h2>
+          @if (esPropiedadHorizontal()) {
+            <label class="agendar-field">
+              <span class="agendar-field-label">Nombre de la propiedad</span>
+              <input
+                type="text"
+                formControlName="nombreCompleto"
+                placeholder="Nombre de la propiedad"
+                readonly />
+            </label>
+          } @else {
+            <label class="agendar-field">
+              <span class="agendar-field-label">Nombre y apellido</span>
+              <input
+                type="text"
+                formControlName="nombreCompleto"
+                placeholder="Nombre y apellido"
+                autocomplete="name"
+                readonly />
+            </label>
+          }
+          <label class="agendar-field">
+            <span class="agendar-field-label">Dirección del servicio</span>
+            <input
+              type="text"
+              formControlName="direccion"
+              placeholder="Dirección del servicio"
+              autocomplete="street-address" />
+            <span class="agendar-field-hint">Puedes cambiarla si el servicio es en otra ubicación.</span>
+          </label>
+          @if (esPropiedadHorizontal()) {
+            <label class="agendar-field">
+              <span class="agendar-field-label">NIT</span>
+              <input type="text" formControlName="nit" placeholder="NIT propiedad horizontal" />
+            </label>
+          }
+        </div>
+
+        <div class="agendar-bloque">
+          <h2 class="agendar-bloque-titulo">
+            <span class="agendar-bloque-icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+              </svg>
+            </span>
+            Días del servicio
+          </h2>
+          <label class="agendar-field">
+            <span class="agendar-field-label">Fecha de inicio</span>
+            <input type="date" formControlName="fechaInicio" [min]="fechaMinima" />
+            <span class="agendar-field-hint">Primer día en que se presta el servicio.</span>
+          </label>
+          <label class="agendar-field">
+            <span class="agendar-field-label">Fecha de fin</span>
+            <input type="date" formControlName="fechaFin" [min]="fechaMinima" />
+            <span class="agendar-field-hint">Último día del servicio (puede ser el mismo que el inicio).</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="agendar-form-actions">
+      <button type="button" class="agendar-btn-sec" (click)="limpiar()" [disabled]="cargandoPerfil()">
+        Limpiar formulario
+      </button>
+      <button type="submit" class="agendar-btn-prim" [disabled]="cargandoPerfil()">
+        Continuar y confirmar
+      </button>
+    </div>
+  </form>
+</section>
+
+@if (modalAbierto() && resumenModal(); as r) {
+  <div class="modal-backdrop" role="presentation" (click)="cerrarModal()"></div>
+  <div class="modal-confirm" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
+    <header class="modal-header">
+      <h2 id="modal-titulo" class="modal-titulo">Confirma tu información</h2>
+      <p class="modal-subtitulo">Revisa los datos antes de confirmar el agendamiento.</p>
+    </header>
+    <div class="modal-grid">
+      <div class="modal-col">
+        <p class="modal-linea"><span class="modal-label">Servicio</span> {{ r.servicio }}</p>
+        @if (r.esPh) {
+          <p class="modal-linea"><span class="modal-label">Propiedad</span> {{ r.nombrePropiedad }}</p>
+          <p class="modal-linea"><span class="modal-label">NIT</span> {{ r.nit }}</p>
+        } @else {
+          <p class="modal-linea"><span class="modal-label">Nombre(s)</span> {{ r.nombres }}</p>
+          <p class="modal-linea"><span class="modal-label">Apellido(s)</span> {{ r.apellidos }}</p>
+        }
+        <p class="modal-linea"><span class="modal-label">Dirección</span> {{ r.direccion }}</p>
+        @if (r.costoEstimado) {
+          <div class="modal-costo">
+            <span class="modal-label">Costo estimado del servicio</span>
+            <span class="modal-costo-valor">{{ r.costoEstimado }}</span>
+            @if (r.precioPorHora) {
+              <p class="modal-costo-detalle">Tarifa: {{ r.precioPorHora }} · {{ r.tiempoTotal }}</p>
+            }
+          </div>
+        } @else if (r.sinTarifa) {
+          <p class="modal-costo-aviso">No hay tarifa registrada para este servicio y tu tipo de cliente.</p>
+        }
+      </div>
+      <div class="modal-col modal-col--fechas">
+        <p class="modal-seccion">Días del servicio</p>
+        <p class="modal-linea modal-linea--destacada">{{ r.diasServicio }}</p>
+        <p class="modal-seccion">Horario de trabajo diario</p>
+        <p class="modal-linea">{{ r.horarioDiario }}</p>
+        <p class="modal-linea"><span class="modal-label">Jornada</span> {{ r.horasPorDia }}</p>
+        <p class="modal-linea"><span class="modal-label">Total estimado</span> {{ r.tiempoTotal }}</p>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="agendar-btn-sec" (click)="cerrarModal()" [disabled]="enviando()">Cancelar</button>
+      <button
+        type="button"
+        class="agendar-btn-prim"
+        (click)="confirmarAgendamiento()"
+        [disabled]="enviando() || r.sinTarifa">
+        {{ enviando() ? 'Guardando…' : 'Confirmar agendamiento' }}
+      </button>
+    </div>
+  </div>
+}

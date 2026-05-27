@@ -1,0 +1,461 @@
+/* --- 1. VARIABLES DE MARCA --- */
+$azul-oscuro: #16245d; 
+$azul-brillante: #2a58ad; 
+$gris-fondo: #e8e8e8; 
+$blanco: #ffffff;
+$radius: 12px;
+
+
+
+/* --- 2. CONFIGURACIÓN BASE --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1300px; 
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* --- 3. HEADER (MÁS ALTO, LOGO Y TEXTOS MÁS GRANDES) --- */
+.main-header {
+  background: $blanco;
+  padding: 40px 0; /* Aumentado para darle más altura al header */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+  .header-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img { height: 120px; } /* Aumentado de 60px a 90px */
+
+  .main-nav {
+    margin: 0 auto; 
+    
+    ul {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 60px; /* Aumentado de 25px a 45px para separar más los enlaces */
+
+      a {
+        text-decoration: none;
+        color: $azul-oscuro;
+        font-weight: 500;
+        font-size: 1.25rem; /* Aumentado para que el texto sea más grande */
+        transition: color 0.3s;
+        &:hover { color: $azul-brillante; }
+      }
+
+      .separator { 
+        color: $azul-oscuro; 
+        font-weight: 400; 
+        font-size: 1.4rem; /* Ajustado en proporción */
+      }
+
+      .btn-client-access {
+        border: 1.5px solid $azul-oscuro;
+        padding: 10px 30px; /* Botón un poco más grande para mantener armonía */
+        border-radius: 50px; 
+        font-weight: 600;
+        font-size: 1.1rem; /* Texto del botón más grande */
+        transition: all 0.3s;
+        &:hover {
+          background: $azul-oscuro;
+          color: $blanco;
+        }
+      }
+
+      button.btn-client-access {
+        background: transparent;
+        color: $azul-oscuro;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .nav-user {
+        font-size: 1rem;
+        color: $azul-oscuro;
+        font-weight: 600;
+        max-width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+/* --- 4. HERO SECTION --- */
+.hero-section {
+  padding: 0; 
+  position: relative;
+  overflow: hidden;
+
+  .hero-image-fullwidth {
+    position: relative;
+    width: 100vw; 
+    height: 650px; 
+    display: flex;
+    align-items: center; 
+
+    & > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+      object-position: top center; 
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1; 
+    }
+
+    .hero-overlay-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, rgba(255,255,255,0) 65%);
+      z-index: 2; 
+    }
+
+    .hero-text-container {
+      position: relative;
+      z-index: 3; 
+      display: flex;
+      justify-content: flex-start; 
+      width: 100%;
+    }
+  }
+
+  .hero-content {
+    max-width: 550px; 
+    text-align: center; 
+    padding: 80px 0; 
+    
+    h1.hero-title {
+      font-size: 3.2rem;
+      color: $azul-oscuro; 
+      line-height: 1.2;
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+    
+    .hero-subtitle { 
+      font-size: 1.1rem; 
+      color: #555; 
+      font-weight: 600;
+      line-height: 1.5; 
+      max-width: 450px;
+      margin: 0 auto;
+    }
+  }
+}
+
+/* --- 5. SOBRE NOSOTROS --- */
+.about-section {
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(42,88,173,0.15) 0%, rgba(42,88,173,0.05) 50%, rgba(255,255,255,0) 80%);
+    border-radius: 50%;
+    z-index: -1;
+  }
+
+  .about-container {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .about-images-grid { 
+    flex: 1.2; 
+    img { border-radius: 0; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+  }
+
+  .about-text {
+    flex: 1;
+    h2 { font-size: 3rem; color: $azul-oscuro; margin-bottom: 25px; font-weight: 800; }
+    p { margin-bottom: 20px; font-size: 1.05rem; line-height: 1.7; color: #444; font-weight: 600; }
+  }
+}
+
+/* --- 6. NOVEDADES --- */
+.news-section {
+  background-color: $gris-fondo;
+  padding: 80px 0;
+  
+  .centered { 
+    text-align: center; 
+    margin-bottom: 50px; 
+    font-size: 3rem; 
+    color: $azul-oscuro; 
+    font-weight: 800; 
+  }
+
+  .carousel-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .carousel-arrow {
+    background: none;
+    border: none;
+    font-size: 3rem;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.3s;
+    font-weight: bold;
+    padding: 10px;
+    &:hover { 
+      transform: scale(1.1); 
+      color: $azul-brillante;
+    }
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+    flex: 1;
+  }
+
+  .news-card {
+    background: $blanco;
+    border-radius: $radius;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column; 
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid transparent;
+
+    &:hover { 
+      transform: translateY(-12px); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+      border-color: rgba($azul-brillante, 0.15);
+
+      .news-img { transform: scale(1.05); } 
+      .btn-read .arrow { transform: translateX(6px); } 
+    }
+
+    .news-img-wrapper {
+      width: 100%;
+      height: 380px; 
+      overflow: hidden;
+      position: relative;
+    }
+
+    .news-img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      object-position: top;
+      transition: transform 0.5s ease;
+    }
+    
+    .news-body {
+      padding: 30px 25px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; 
+      justify-content: space-between;
+      
+      h3 { margin-bottom: 12px; font-size: 1.35rem; color: $azul-oscuro; font-weight: 800; }
+      
+      p { 
+        color: #555; 
+        font-size: 0.95rem; 
+        margin-bottom: 25px; 
+        font-weight: 600; 
+        line-height: 1.5; 
+        flex-grow: 1; 
+      }
+      
+      .btn-read {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: $azul-oscuro;
+        font-weight: 700;
+        font-size: 0.95rem;
+        padding: 10px 25px;
+        background-color: rgba($azul-brillante, 0.08);
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        margin: 0 auto;
+
+        .arrow {
+          display: inline-block;
+          margin-left: 8px;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          background-color: $azul-oscuro;
+          color: $blanco;
+        }
+      }
+    }
+  }
+}
+
+
+
+/* --- 7. FORMULARIO --- */
+.training-section {
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -200px;
+    bottom: -100px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(42,88,173,0.15) 0%, rgba(42,88,173,0.05) 50%, rgba(255,255,255,0) 80%);
+    border-radius: 50%;
+    z-index: -1;
+  }
+
+  .training-container {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+  }
+  
+  .training-image { 
+    flex: 1; 
+    img { border-radius: $radius; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+  }
+  
+  .training-form-wrapper {
+    flex: 1;
+    h2 { font-size: 3rem; color: $azul-oscuro; margin-bottom: 10px; font-weight: 800; }
+    .subtitle { margin-bottom: 30px; font-weight: 700; color: #555; font-size: 1rem; }
+  }
+
+  .training-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    input, select, .fake-file-input {
+      padding: 18px 25px;
+      border: 1.5px solid $azul-oscuro;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      outline: none;
+      width: 100%;
+      color: #333;
+      background: transparent;
+      &::placeholder { color: #a0a0a0; font-weight: 500; }
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2316245d%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 25px top 50%;
+      background-size: 15px auto;
+      color: #a0a0a0;
+    }
+    
+    .file-input { cursor: pointer; }
+
+    .btn-submit {
+      align-self: flex-end; 
+      padding: 12px 50px;
+      background: transparent;
+      border: 1.5px solid $azul-oscuro;
+      color: $azul-oscuro;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+      &:hover { background: $azul-oscuro; color: $blanco; }
+    }
+  }
+}
+
+/* --- 8. FOOTER --- */
+.main-footer {
+  background-color: #26388b; 
+  color: $blanco;
+  padding: 60px 0 20px;
+
+  .footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 40px;
+    margin-bottom: 25px;
+  }
+
+  .footer-logo-box img { width: 180px; }
+  
+  .footer-info, .footer-links {
+    h4 { font-size: 1.3rem; margin-bottom: 15px; font-weight: 700; }
+    p, a { color: $blanco; text-decoration: none; display: block; margin-bottom: 8px; font-size: 1rem; }
+  }
+  
+  .footer-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      a img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        transition: transform 0.3s;
+        &:hover { transform: scale(1.1); }
+      }
+    }
+
+    .copyright {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+  }
+}

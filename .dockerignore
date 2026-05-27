@@ -1,0 +1,15 @@
+node_modules
+dist
+.angular
+.git
+.cursor
+**/.cursor
+**/agent-transcripts
+**/terminals
+uploads
+torreal-api/target
+torreal-api/uploads
+*.md
+!docker/**/*.md
+.env
+.env.*

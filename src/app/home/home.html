@@ -1,0 +1,132 @@
+<main class="main-content">
+  <section class="hero-section">
+    <div class="hero-image-fullwidth">
+      <img src="images/imagenHero.png" alt="Profesional Torreal S.A.S">
+      <div class="hero-overlay-gradient"></div>
+      
+      <div class="container hero-text-container">
+        <div class="hero-content">
+          <h1 class="hero-title">En Torreal S.A.S <br> construimos tu confianza</h1>
+          <p class="hero-subtitle">En Torreal SAS combinamos experiencia y dedicación <br> para brindar soluciones integrales con excelencia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre-nosotros" class="about-section">
+    <div class="container about-container">
+      <div class="about-images-grid">
+        <img src="images/imagenSobreNosotros.png" alt="Sobre Nosotros" class="about-img">
+      </div>
+      
+      <div class="about-text">
+        <h2 class="section-title">Sobre Torreal S.A.S</h2>
+        <p>Somos Torreal SAS, una organización líder en la región sur colombiana y centro del país, enfocada en ser una fuente de soluciones inmediatas y confiables para nuestros clientes. Nos dedicamos con pasión a prestar servicios operativos de alta calidad, como limpieza general, mantenimiento de piscinas, instalación y mantenimiento de aires acondicionados, circuitos cerrados de TV (CCTV) y apoyo logístico, incluyendo salvavidas y gestión de correspondencia.</p>
+        <p>Con un equipo humano capacitado, competitivo y comprometido, trabajamos con eficiencia, ética y responsabilidad, asegurando espacios óptimos y procesos ágiles.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="novedades" class="news-section">
+    <div class="container">
+      <h2 class="section-title centered">Novedades en Torreal S.A.S</h2>
+      <div class="carousel-container">
+        <button
+          type="button"
+          class="carousel-arrow left-arrow"
+          aria-label="Anterior"
+          [disabled]="!puedeRetroceder()"
+          (click)="carruselAnterior()">
+          &#10094;
+        </button>
+
+        <div class="news-grid">
+          @if (ventanaNovedades().length > 0) {
+            @for (n of ventanaNovedades(); track n.id) {
+              <article class="news-card">
+                <div class="news-img-wrapper">
+                  <img [src]="urlImagenNovedad(n.imagenUrl)" [alt]="n.titulo" class="news-img" />
+                </div>
+                <div class="news-body">
+                  <h3>{{ n.titulo }}</h3>
+                  <p>{{ n.contenido }}</p>
+                  <a href="#formacion" class="btn-read" (click)="$event.preventDefault()">
+                    Ver mas <span class="arrow">&rarr;</span>
+                  </a>
+                </div>
+              </article>
+            }
+          } @else {
+            <article class="news-card">
+              <div class="news-img-wrapper">
+                <img src="images/oferta1.png" alt="Torreal" class="news-img" />
+              </div>
+              <div class="news-body">
+                <h3>Oportunidad de trabajo</h3>
+                <p>Envíanos tu hoja de vida y forma parte de este gran equipo</p>
+                <a href="#formacion" class="btn-read">Ver mas <span class="arrow">&rarr;</span></a>
+              </div>
+            </article>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="carousel-arrow right-arrow"
+          aria-label="Siguiente"
+          [disabled]="!puedeAvanzar()"
+          (click)="carruselSiguiente()">
+          &#10095;
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="training-section">
+    <div class="container training-container">
+      <div class="training-image">
+        <img src="images/imagenFormulario.png" alt="Capacitación" class="img-fluid">
+      </div>
+      
+      <div class="training-form-wrapper">
+        <h2 class="section-title">Forma parte de Torreal S.A.S</h2>
+        <p class="subtitle">Completa el formulario</p>
+        <form class="training-form" [formGroup]="postulacionForm" (ngSubmit)="enviarPostulacion()">
+          <input type="text" formControlName="nombreCompleto" placeholder="Nombre y Apellido" autocomplete="name">
+          <input type="email" formControlName="correoElectronico" placeholder="Correo Electrónico" autocomplete="email">
+          <select formControlName="areaInteres">
+            <option value="">Área de interés (opcional)</option>
+            @for (opt of especialidadOpciones; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          <div class="file-input">
+            <input
+              type="text"
+              readonly
+              class="fake-file-input"
+              [value]="nombreArchivoCv() ?? ''"
+              placeholder="Elegir CV en PDF"
+              tabindex="-1"
+              (click)="abrirSelectorCv(cvUpload)">
+            <input
+              #cvUpload
+              type="file"
+              class="visually-hidden-cv"
+              accept=".pdf,application/pdf"
+              (change)="onArchivoCvChange($event)">
+          </div>
+          @if (mensajeExito(); as ok) {
+            <p class="form-feedback form-feedback-success" role="status">{{ ok }}</p>
+          }
+          @if (mensajeError(); as err) {
+            <p class="form-feedback form-feedback-error" role="alert">{{ err }}</p>
+          }
+          <button type="submit" class="btn-submit" [disabled]="enviando()">
+            {{ enviando() ? 'Enviando…' : 'Enviar' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>

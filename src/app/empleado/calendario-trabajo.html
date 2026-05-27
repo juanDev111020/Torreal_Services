@@ -1,0 +1,187 @@
+<div class="calendario-page">
+  <header class="cal-page-header">
+    <div class="cal-page-titulos">
+      <p class="cal-page-etiqueta">Agenda laboral</p>
+      <h1 class="cal-page-titulo">Calendario de trabajo</h1>
+    </div>
+    @if (!agendamientosRes.isLoading() && !agendamientosRes.error()) {
+      <span class="cal-stat-chip">
+        {{ totalServiciosAnio() }}
+        {{ totalServiciosAnio() === 1 ? 'servicio' : 'servicios' }} en {{ anio() }}
+      </span>
+    }
+  </header>
+
+  @if (agendamientosRes.isLoading()) {
+    <div class="cal-estado cal-estado--carga" aria-busy="true">
+      <div class="cal-skeleton-layout">
+        <div class="cal-skeleton-panel"></div>
+        <div class="cal-skeleton-calendario"></div>
+      </div>
+      <p class="cal-estado-texto">Cargando calendario…</p>
+    </div>
+  } @else if (errorCarga(); as err) {
+    <div class="cal-alerta cal-alerta--error" role="alert">
+      <p>{{ err }}</p>
+    </div>
+  } @else {
+    <div class="cal-layout">
+      <aside class="cal-panel-servicio" aria-label="Detalle del servicio seleccionado">
+        @if (detalle(); as d) {
+          <article class="cal-servicio-card">
+            <div class="cal-servicio-card-cabecera">
+              <span class="cal-servicio-icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+              </span>
+              <div>
+                <p class="cal-servicio-etiqueta">Servicio programado</p>
+                <h2 class="cal-servicio-nombre">{{ d.servicioNombre }}</h2>
+              </div>
+            </div>
+
+            <span class="cal-estado-badge" [class]="claseEstadoBadge(d.estado)">
+              {{ d.estado }}
+            </span>
+
+            <dl class="cal-datos-servicio">
+              <div class="cal-dato">
+                <dt>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Fecha programada
+                </dt>
+                <dd>{{ textoFechaProgramada() }}</dd>
+              </div>
+              <div class="cal-dato">
+                <dt>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
+                  Hora de inicio
+                </dt>
+                <dd>{{ textoHoraInicio() }}</dd>
+              </div>
+              <div class="cal-dato">
+                <dt>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
+                  Hora de finalización
+                </dt>
+                <dd>{{ textoHoraFin() }}</dd>
+              </div>
+              <div class="cal-dato cal-dato--cliente">
+                <dt>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  Cliente
+                </dt>
+                <dd>{{ d.clienteNombre || '—' }}</dd>
+              </div>
+            </dl>
+
+            <p class="cal-servicio-ayuda">
+              Selecciona otro día resaltado en el calendario para ver otro servicio.
+            </p>
+          </article>
+        } @else {
+          <article class="cal-servicio-card cal-servicio-card--vacio">
+            <span class="cal-vacio-icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+              </svg>
+            </span>
+            <h2>Sin servicios en {{ anio() }}</h2>
+            <p>No tienes agendamientos asignados para este año. Cambia de año o revisa más adelante.</p>
+          </article>
+        }
+      </aside>
+
+      <section class="cal-panel-calendario" aria-label="Vista anual">
+        <div class="cal-anio-card">
+          <div class="cal-anio-toolbar">
+            <button
+              type="button"
+              class="cal-btn-anio"
+              (click)="anioAnterior()"
+              aria-label="Año anterior">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <div class="cal-anio-centro">
+              <span class="cal-anio-etiqueta">Año</span>
+              <span class="cal-anio-numero">{{ anio() }}</span>
+            </div>
+            <button
+              type="button"
+              class="cal-btn-anio"
+              (click)="anioSiguiente()"
+              aria-label="Año siguiente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+
+          <p class="cal-leyenda">
+            <span class="cal-leyenda-muestra cal-leyenda-muestra--servicio"></span>
+            Día con servicio
+            <span class="cal-leyenda-muestra cal-leyenda-muestra--seleccion"></span>
+            Seleccionado
+          </p>
+
+          <div class="cal-rejilla-meses">
+            @for (m of mesesIndices; track m) {
+              <div
+                class="mini-mes"
+                [class.mini-mes--con-servicios]="mesTieneServicios(m)"
+                [class.mini-mes--activo]="mesContieneSeleccion(m)">
+                <h3 class="mini-mes-titulo">{{ mesTitulo(m) }}</h3>
+                <div class="mini-dow">
+                  @for (d of diasSemana; track $index) {
+                    <span class="mini-dow-cel" [class.dom]="colDomingo($index)">{{ d }}</span>
+                  }
+                </div>
+                @for (fila of matriz(m); track $index) {
+                  <div class="mini-fila">
+                    @for (cel of fila; track $index) {
+                      <span
+                        class="mini-dia"
+                        [class.vacio]="cel === null"
+                        [class.dom]="celdaDomingo(m, cel, $index)"
+                        [class.con-servicio]="tieneServicio(m, cel)"
+                        [class.detalle]="esDiaDetalle(m, cel)"
+                        [attr.tabindex]="cel !== null && tieneServicio(m, cel) ? 0 : null"
+                        [attr.role]="cel !== null && tieneServicio(m, cel) ? 'button' : null"
+                        [attr.aria-label]="
+                          cel !== null && tieneServicio(m, cel)
+                            ? 'Servicio el ' + cel + ' de ' + mesTitulo(m)
+                            : null
+                        "
+                        (click)="alElegirDia(m, cel)"
+                        (keydown.enter)="alElegirDia(m, cel)"
+                        (keydown.space)="$event.preventDefault(); alElegirDia(m, cel)">
+                        {{ cel }}
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+    </div>
+  }
+</div>

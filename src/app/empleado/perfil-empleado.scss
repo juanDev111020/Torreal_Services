@@ -1,0 +1,337 @@
+$azul-marca: #003399;
+$azul-oscuro: #16245d;
+$azul-claro: #2563eb;
+$fondo-pagina: #f0f4fa;
+$borde-card: #d8deea;
+$sombra-card: 0 8px 28px rgba(22, 36, 93, 0.1);
+
+.perfil-empleado-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 3rem;
+  min-height: 100%;
+  background: $fondo-pagina;
+}
+
+// —— Estados de carga y error ——
+
+.perfil-estado {
+  text-align: center;
+}
+
+.perfil-estado-texto {
+  margin: 1.25rem 0 0;
+  color: #5a6478;
+  font-size: 0.95rem;
+}
+
+.perfil-skeleton-hero {
+  height: 140px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: perfil-shimmer 1.2s ease-in-out infinite;
+}
+
+.perfil-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.perfil-skeleton-card {
+  height: 180px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f8fafc 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: perfil-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes perfil-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.perfil-alerta {
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+
+  &--error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+  }
+
+  &--inactivo {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    color: #92400e;
+    margin-bottom: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+// —— Hero ——
+
+.perfil-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 2rem 2.25rem;
+  margin-bottom: 1.75rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, $azul-marca 0%, #1e4db8 55%, $azul-claro 100%);
+  color: #fff;
+  box-shadow: $sombra-card;
+}
+
+.perfil-hero-avatar {
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.perfil-hero-contenido {
+  min-width: 0;
+}
+
+.perfil-hero-etiqueta {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.perfil-hero-nombre {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.perfil-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.perfil-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  &--rol {
+    background: rgba(255, 255, 255, 0.95);
+    color: $azul-marca;
+    border-color: transparent;
+  }
+
+  &--activo {
+    background: rgba(34, 197, 94, 0.25);
+    border-color: rgba(134, 239, 172, 0.6);
+    color: #fff;
+  }
+
+  &--inactivo {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fcd34d;
+  }
+}
+
+// —— Grid de tarjetas ——
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.perfil-card {
+  background: #fff;
+  border: 1px solid $borde-card;
+  border-radius: 16px;
+  padding: 1.5rem 1.65rem;
+  box-shadow: 0 4px 16px rgba(22, 36, 93, 0.06);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    box-shadow: $sombra-card;
+    transform: translateY(-2px);
+  }
+
+  &--cuenta {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.perfil-card-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eef1f6;
+
+  h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: $azul-oscuro;
+  }
+}
+
+.perfil-card-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #eef3ff;
+  color: $azul-marca;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.perfil-datos {
+  margin: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+
+.perfil-dato {
+  dt {
+    margin: 0 0 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+}
+
+.perfil-enlace {
+  color: $azul-claro;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.perfil-vacio {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.perfil-estado-pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: #f3f4f6;
+  color: #4b5563;
+
+  &--activo {
+    background: #dcfce7;
+    color: #166534;
+  }
+}
+
+.perfil-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.7rem 1.25rem;
+  align-self: flex-start;
+  border-radius: 10px;
+  background: $azul-marca;
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: #002b7a;
+    transform: translateX(2px);
+  }
+}
+
+// —— Responsive ——
+
+@media (max-width: 768px) {
+  .perfil-empleado-page {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .perfil-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+  }
+
+  .perfil-hero-badges {
+    justify-content: center;
+  }
+
+  .perfil-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-card--cuenta {
+    grid-column: auto;
+  }
+}

@@ -1,0 +1,144 @@
+/* VARIABLES (Asegúrate de tenerlas disponibles en este archivo) */
+$azul-oscuro: #16245d; 
+$blanco: #ffffff;
+
+.services-section {
+  padding: 80px 0 120px;
+  position: relative;
+  overflow: hidden;
+  background-color: $blanco;
+
+  /* CÍRCULOS DECORATIVOS DE FONDO */
+  .circle-bg {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  
+  .circle-1 {
+    width: 600px; height: 600px;
+    left: -150px; top: 5%;
+    background: radial-gradient(circle, rgba(42,88,173,0.1) 0%, rgba(42,88,173,0.05) 50%, rgba(255,255,255,0) 70%);
+  }
+  
+  .circle-2 {
+    width: 800px; height: 800px;
+    right: -250px; top: 40%;
+    background: radial-gradient(circle, rgba(22,36,93,0.08) 0%, rgba(22,36,93,0.03) 50%, rgba(255,255,255,0) 70%);
+  }
+
+  .circle-3 {
+    width: 500px; height: 500px;
+    left: -100px; bottom: 5%;
+    background: radial-gradient(circle, rgba(42,88,173,0.1) 0%, rgba(42,88,173,0.05) 50%, rgba(255,255,255,0) 70%);
+  }
+
+  .container {
+    position: relative;
+    z-index: 1; 
+  }
+
+  .section-title.centered {
+    text-align: center;
+    font-size: 3rem;
+    color: $azul-oscuro;
+    margin-bottom: 80px;
+    font-weight: 800;
+  }
+
+  .services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 80px; 
+  }
+
+  .service-row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    
+    /* Alterna el orden visual (imagen derecha, imagen izquierda) */
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .service-content {
+    flex: 1;
+    text-align: center; 
+
+    h3 {
+      font-size: 2.2rem;
+      color: $azul-oscuro;
+      margin-bottom: 15px;
+      font-weight: 800;
+    }
+
+    p {
+      color: #555;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      padding: 0 20px;
+    }
+
+    .service-features {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 35px;
+
+      .feature {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 140px;
+
+        img {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+          margin-bottom: 12px;
+        }
+
+        span {
+          font-size: 0.95rem;
+          color: #333;
+          font-weight: 600;
+          line-height: 1.3;
+        }
+      }
+    }
+
+    .btn-outline {
+      display: inline-block;
+      border: 1.5px solid $azul-oscuro;
+      padding: 10px 35px;
+      border-radius: 50px;
+      color: $azul-oscuro;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+
+      &:hover {
+        background: $azul-oscuro;
+        color: $blanco;
+      }
+    }
+  }
+
+  .service-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      max-width: 450px; 
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      object-fit: cover;
+    }
+  }
+}

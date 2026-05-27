@@ -1,59 +1,58 @@
-# TorrealService
+# Torreal Service
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+Aplicación web **Torreal S.A.S** (Angular + API Java + MySQL).
 
-## Development server
+## Uso normal — solo Docker (recomendado)
 
-To start a local development server, run:
+No necesitas instalar Node, Java ni Maven para usar el proyecto en otra PC.
 
-```bash
-ng serve
-```
+### Requisitos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y en ejecución (“Running”).
 
-## Code scaffolding
+### Primera vez (o tras clonar el repo)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Abre la carpeta del proyecto.
+2. Doble clic en **`Torreal-Iniciar.cmd`** (construye imágenes y levanta todo).
+3. Se abrirá **http://127.0.0.1:4200** (app + API por el mismo puerto).
 
-```bash
-ng generate component component-name
-```
+### Después (mismo PC)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Con **`restart: unless-stopped`**, al abrir Docker Desktop los contenedores **vuelven solos** si ya los habías iniciado antes (no hace falta volver a ejecutar comandos).
+- Si no aparecen: doble clic otra vez en **`Torreal-Iniciar.cmd`**.
 
-```bash
-ng generate --help
-```
+### Detener
 
-## Building
+- Doble clic en **`Torreal-Detener.cmd`**.
 
-To build the project run:
+### Credenciales de prueba
 
-```bash
-ng build
-```
+- **Super usuario:** `super@torreal.local` / `Torreal@Super2026`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Importante
 
-## Running unit tests
+| Correcto | Incorrecto |
+|----------|------------|
+| Entrar a **http://127.0.0.1:4200** con `torreal_web`, `torreal_api`, `torreal_mysql` activos (`docker ps`) | Usar **http://localhost:4200** si sigue abierto `npm start` (Angular dev en IPv6, sin la API de Docker) |
+| Solo Docker Desktop abierto | Tener `ng serve` y Docker a la vez en el puerto **4200** |
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Más detalle: [DOCKER.md](DOCKER.md).
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## Desarrollo con código en el host (opcional)
 
-For end-to-end (e2e) testing, run:
+Solo si vas a modificar Angular o la API fuera de Docker:
 
 ```bash
-ng e2e
+docker compose up -d mysql api   # BD + API en Docker
+npm start                        # Angular con proxy a :8080
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+O API con Maven: `npm run api:java` (requiere JDK 17+ y Maven).
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Angular CLI (referencia)
+
+Documentación generada por Angular CLI 21. Ver [angular.dev](https://angular.dev).
