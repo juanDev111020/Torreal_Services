@@ -59,6 +59,19 @@ public class AuthServiceImpl implements AuthService {
       throw new ApiBusinessException(HttpStatus.BAD_REQUEST, "Completa nombre, correo, teléfono y contraseña.");
     }
 
+    if (nombreCompleto.length() > 50) {
+      throw new ApiBusinessException(HttpStatus.BAD_REQUEST, "El nombre no debe exceder los 50 caracteres.");
+    }
+    if (!nombreCompleto.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+      throw new ApiBusinessException(HttpStatus.BAD_REQUEST, "El nombre no debe contener números ni caracteres especiales.");
+    }
+    if (email.length() > 100) {
+      throw new ApiBusinessException(HttpStatus.BAD_REQUEST, "El correo no debe exceder los 100 caracteres.");
+    }
+    if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+      throw new ApiBusinessException(HttpStatus.BAD_REQUEST, "El correo debe ser obligatorio @gmail.com.");
+    }
+
     String errPass = RegistroValidacion.validarPasswordRegistro(password);
     if (errPass != null) {
       throw new ApiBusinessException(HttpStatus.BAD_REQUEST, errPass);
