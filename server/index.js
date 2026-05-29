@@ -204,6 +204,31 @@ app.post('/api/postulaciones', async (req, res) => {
       return res.status(400).json({ error: 'Indica nombre completo y correo electrónico.' });
     }
 
+    if (nombreCompleto.length > 50) {
+      if (cvMeta?.absPath && fs.existsSync(cvMeta.absPath)) {
+        try { fs.unlinkSync(cvMeta.absPath); } catch (_) {}
+      }
+      return res.status(400).json({ error: 'El nombre no debe exceder los 50 caracteres.' });
+    }
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombreCompleto)) {
+      if (cvMeta?.absPath && fs.existsSync(cvMeta.absPath)) {
+        try { fs.unlinkSync(cvMeta.absPath); } catch (_) {}
+      }
+      return res.status(400).json({ error: 'El nombre no debe contener números ni caracteres especiales.' });
+    }
+    if (correo.length > 100) {
+      if (cvMeta?.absPath && fs.existsSync(cvMeta.absPath)) {
+        try { fs.unlinkSync(cvMeta.absPath); } catch (_) {}
+      }
+      return res.status(400).json({ error: 'El correo no debe exceder los 100 caracteres.' });
+    }
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(correo)) {
+      if (cvMeta?.absPath && fs.existsSync(cvMeta.absPath)) {
+        try { fs.unlinkSync(cvMeta.absPath); } catch (_) {}
+      }
+      return res.status(400).json({ error: 'El correo debe ser obligatorio @gmail.com.' });
+    }
+
     const archivoCvUrl = cvMeta ? cvMeta.storedRelative.slice(0, 255) : null;
     if (cvMeta?.absPath) uploadedAbsPath = cvMeta.absPath;
 

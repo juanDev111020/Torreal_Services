@@ -92,8 +92,8 @@
         <h2 class="section-title">Forma parte de Torreal S.A.S</h2>
         <p class="subtitle">Completa el formulario</p>
         <form class="training-form" [formGroup]="postulacionForm" (ngSubmit)="enviarPostulacion()">
-          <input type="text" formControlName="nombreCompleto" placeholder="Nombre y Apellido" autocomplete="name">
-          <input type="email" formControlName="correoElectronico" placeholder="Correo Electrónico" autocomplete="email">
+          <input type="text" formControlName="nombreCompleto" placeholder="Nombre y Apellido" autocomplete="name" maxlength="50">
+          <input type="email" formControlName="correoElectronico" placeholder="Correo Electrónico" autocomplete="email" maxlength="100">
           <select formControlName="areaInteres">
             <option value="">Área de interés (opcional)</option>
             @for (opt of especialidadOpciones; track opt) {

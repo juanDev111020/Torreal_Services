@@ -140,7 +140,13 @@
 
             }
 
-            <input type="text" formControlName="nombreCompleto" autocomplete="name">
+            <input type="text" formControlName="nombreCompleto" autocomplete="name" maxlength="50">
+
+            @if (mensajeErrorNombre(); as hn) {
+
+              <span class="field-error">{{ hn }}</span>
+
+            }
 
           </label>
 
@@ -148,7 +154,13 @@
 
             <span class="field-label">Correo electrónico</span>
 
-            <input type="email" formControlName="email" autocomplete="email">
+            <input type="email" formControlName="email" autocomplete="email" maxlength="100">
+
+            @if (mensajeErrorEmail(); as he) {
+
+              <span class="field-error">{{ he }}</span>
+
+            }
 
           </label>
 
@@ -214,7 +226,13 @@
 
             <span class="field-label">Dirección</span>
 
-            <input type="text" formControlName="direccion" autocomplete="street-address">
+            <input type="text" formControlName="direccion" autocomplete="street-address" maxlength="30">
+
+            @if (registroForm.controls.direccion.touched && registroForm.controls.direccion.errors?.['maxlength']) {
+
+              <span class="field-error">La dirección no debe exceder los 30 caracteres.</span>
+
+            }
 
           </label>
 

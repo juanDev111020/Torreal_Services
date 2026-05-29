@@ -36,6 +36,19 @@ function registerAuthRoutes(app, pool) {
         });
       }
 
+      if (nombreCompleto.length > 50) {
+        return res.status(400).json({ error: 'El nombre no debe exceder los 50 caracteres.' });
+      }
+      if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombreCompleto)) {
+        return res.status(400).json({ error: 'El nombre no debe contener números ni caracteres especiales.' });
+      }
+      if (email.length > 100) {
+        return res.status(400).json({ error: 'El correo no debe exceder los 100 caracteres.' });
+      }
+      if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+        return res.status(400).json({ error: 'El correo debe ser obligatorio @gmail.com.' });
+      }
+
       const errPass = validarPasswordRegistro(password);
       if (errPass) return res.status(400).json({ error: errPass });
 

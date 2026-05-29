@@ -45,8 +45,16 @@ export class Home implements OnInit {
   private readonly cvUploadRef = viewChild<ElementRef<HTMLInputElement>>('cvUpload');
 
   readonly postulacionForm = this.fb.group({
-    nombreCompleto: ['', Validators.required],
-    correoElectronico: ['', [Validators.required, Validators.email]],
+    nombreCompleto: ['', [
+      Validators.required, 
+      Validators.maxLength(50), 
+      Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+    ]],
+    correoElectronico: ['', [
+      Validators.required, 
+      Validators.maxLength(100), 
+      Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)
+    ]],
     /** Preferencia opcional (no existe en el ERD de postulaciones; no se envía a la API). */
     areaInteres: [''],
   });
@@ -112,11 +120,25 @@ export class Home implements OnInit {
       this.postulacionForm.markAllAsTouched();
       const c = this.postulacionForm.controls;
       if (c.nombreCompleto.invalid) {
-        this.mensajeError.set('Indica tu nombre completo.');
+        if (c.nombreCompleto.errors?.['required']) {
+          this.mensajeError.set('Indica tu nombre completo.');
+        } else if (c.nombreCompleto.errors?.['pattern']) {
+          this.mensajeError.set('El nombre no debe contener números ni caracteres especiales.');
+        } else if (c.nombreCompleto.errors?.['maxlength']) {
+          this.mensajeError.set('El nombre no debe exceder los 50 caracteres.');
+        } else {
+          this.mensajeError.set('Indica un nombre válido.');
+        }
       } else if (c.correoElectronico.invalid) {
-        this.mensajeError.set(
-          'Indica un correo electrónico válido (por ejemplo usuario@correo.com).',
-        );
+        if (c.correoElectronico.errors?.['required']) {
+          this.mensajeError.set('Indica tu correo electrónico.');
+        } else if (c.correoElectronico.errors?.['pattern']) {
+          this.mensajeError.set('El correo debe ser obligatorio @gmail.com.');
+        } else if (c.correoElectronico.errors?.['maxlength']) {
+          this.mensajeError.set('El correo no debe exceder los 100 caracteres.');
+        } else {
+          this.mensajeError.set('Indica un correo electrónico válido (por ejemplo usuario@gmail.com).');
+        }
       } else {
         this.mensajeError.set('Revisa los datos del formulario.');
       }

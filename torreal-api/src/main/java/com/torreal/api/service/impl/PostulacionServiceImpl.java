@@ -52,6 +52,22 @@ public class PostulacionServiceImpl implements PostulacionService {
       throw new ApiBusinessException(
           HttpStatus.BAD_REQUEST, "Indica nombre completo y correo electrónico.");
     }
+    if (nombre.length() > 50) {
+      throw new ApiBusinessException(
+          HttpStatus.BAD_REQUEST, "El nombre no debe exceder los 50 caracteres.");
+    }
+    if (!nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+      throw new ApiBusinessException(
+          HttpStatus.BAD_REQUEST, "El nombre no debe contener números ni caracteres especiales.");
+    }
+    if (correo.length() > 100) {
+      throw new ApiBusinessException(
+          HttpStatus.BAD_REQUEST, "El correo no debe exceder los 100 caracteres.");
+    }
+    if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+      throw new ApiBusinessException(
+          HttpStatus.BAD_REQUEST, "El correo debe ser obligatorio @gmail.com.");
+    }
 
     String archivoCvUrl = null;
     Path savedAbs = null;
