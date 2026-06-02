@@ -88,7 +88,7 @@ export class AgendarServicio implements OnInit, OnDestroy {
       idServicio: ['', Validators.required],
       nombreCompleto: [{ value: '', disabled: true }, Validators.required],
       correo: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-      direccion: ['', Validators.required],
+      direccion: ['', [Validators.required, Validators.maxLength(30)]],
       nit: [''],
       fechaInicio: ['', Validators.required],
       fechaFin: ['', Validators.required],

@@ -112,8 +112,12 @@
               type="text"
               formControlName="direccion"
               placeholder="Dirección del servicio"
-              autocomplete="street-address" />
+              autocomplete="street-address"
+              maxlength="30" />
             <span class="agendar-field-hint">Puedes cambiarla si el servicio es en otra ubicación.</span>
+            @if (form.controls.direccion.touched && form.controls.direccion.errors?.['maxlength']) {
+              <span class="agendar-field-hint" style="color:#c0392b;font-style:normal;">La dirección no debe exceder los 30 caracteres.</span>
+            }
           </label>
           @if (esPropiedadHorizontal()) {
             <label class="agendar-field">

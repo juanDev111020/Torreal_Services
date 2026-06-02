@@ -26,6 +26,7 @@
             type="text"
             formControlName="nombreCompleto"
             autocomplete="name"
+            maxlength="50"
             [class.is-invalid]="campoInvalido('nombreCompleto')" />
           @if (mensajeErrorNombre(); as hn) {
             <span class="campo-error">{{ hn }}</span>
@@ -37,6 +38,7 @@
             type="email"
             formControlName="email"
             autocomplete="email"
+            maxlength="100"
             [class.is-invalid]="campoInvalido('email')" />
           @if (mensajeErrorEmail(); as he) {
             <span class="campo-error">{{ he }}</span>
