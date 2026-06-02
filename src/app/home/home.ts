@@ -7,6 +7,18 @@ import { ESPECIALIDAD_EMPLEADO_OPCIONES } from '../core/especialidad-empleado-op
 import { NovedadPublica, NovedadesApiService, urlArchivoSubido } from '../core/novedades-api.service';
 import { PostulacionesApiService } from '../core/postulaciones-api.service';
 
+export interface VacanteEstructurada {
+  modalidad?: string;
+  descripcionCorta?: string;
+  quienesSomos?: string;
+  aQuienBuscamos?: string;
+  queHaras?: string;
+  requisitos?: string;
+  destacar?: string;
+  condiciones?: string;
+  ofrecemos?: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -66,6 +78,13 @@ export class Home implements OnInit {
   /** PDF elegido en el explorador de archivos (opcional). */
   readonly archivoCv = signal<File | null>(null);
 
+  // --- Lógica del Modal de Vacantes ---
+  readonly modalVacanteAbierto = signal(false);
+  readonly vacanteActual = signal<{
+    novedad: NovedadPublica;
+    datos: VacanteEstructurada | null;
+  } | null>(null);
+
   ngOnInit(): void {
     this.novedadesApi.listar().subscribe({
       next: (lista) => this.novedades.set(lista),
@@ -83,6 +102,50 @@ export class Home implements OnInit {
     const n = this.novedades().length;
     if (n <= this.visiblePorPaso) return;
     this.indiceCarrusel.update((i) => (i + 1) % n);
+  }
+
+  abrirVacante(novedad: NovedadPublica): void {
+    let datos: VacanteEstructurada | null = null;
+    try {
+      if (novedad.contenido.trim().startsWith('{')) {
+        datos = JSON.parse(novedad.contenido) as VacanteEstructurada;
+      }
+    } catch {
+      // Si falla, se trata como texto plano.
+    }
+    this.vacanteActual.set({ novedad, datos });
+    this.modalVacanteAbierto.set(true);
+    document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+  }
+
+  cerrarVacante(): void {
+    this.modalVacanteAbierto.set(false);
+    this.vacanteActual.set(null);
+    document.body.style.overflow = '';
+  }
+
+  irAFormulario(): void {
+    this.cerrarVacante();
+    // Scroll al formulario (href="#formacion" lo hace nativo si se usa ancla,
+    // pero aquí lo forzamos por si acaso)
+    document.getElementById('formacion')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  obtenerDescripcion(novedad: NovedadPublica): string {
+    try {
+      if (novedad.contenido.trim().startsWith('{')) {
+        const datos = JSON.parse(novedad.contenido) as VacanteEstructurada;
+        return datos.descripcionCorta || 'Oportunidad de trabajo';
+      }
+    } catch {
+      // fallback
+    }
+    return novedad.contenido;
+  }
+
+  separarPorSaltos(texto: string | undefined): string[] {
+    if (!texto) return [];
+    return texto.split('\n').map((l) => l.trim()).filter((l) => l.length > 0);
   }
 
   onArchivoCvChange(event: Event): void {

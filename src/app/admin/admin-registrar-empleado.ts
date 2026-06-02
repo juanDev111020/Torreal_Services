@@ -33,8 +33,22 @@ export class AdminRegistrarEmpleado implements OnInit {
 
   readonly form = this.fb.group(
     {
-      nombreCompleto: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      nombreCompleto: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/),
+        ],
+      ],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(100),
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/),
+        ],
+      ],
       password: ['', [Validators.required, passwordReglasValidator]],
       confirmPassword: ['', Validators.required],
       telefono: ['', [Validators.required, telefonoDiezDigitosValidator]],
@@ -74,6 +88,8 @@ export class AdminRegistrarEmpleado implements OnInit {
     const c = this.form.get('nombreCompleto');
     if (!c || (!c.touched && !c.dirty)) return null;
     if (c.errors?.['required']) return 'El nombre completo es obligatorio.';
+    if (c.errors?.['pattern']) return 'El nombre no debe contener números ni caracteres especiales.';
+    if (c.errors?.['maxlength']) return 'El nombre no debe exceder los 50 caracteres.';
     return null;
   }
 
@@ -81,7 +97,8 @@ export class AdminRegistrarEmpleado implements OnInit {
     const c = this.form.get('email');
     if (!c || (!c.touched && !c.dirty)) return null;
     if (c.errors?.['required']) return 'El correo electrónico es obligatorio.';
-    if (c.errors?.['email']) return 'Ingresa un correo válido (ejemplo@correo.com).';
+    if (c.errors?.['pattern']) return 'El correo debe ser una dirección @gmail.com válida.';
+    if (c.errors?.['maxlength']) return 'El correo no debe exceder los 100 caracteres.';
     return null;
   }
 
@@ -102,8 +119,33 @@ export class AdminRegistrarEmpleado implements OnInit {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.mensajeEsError.set(true);
-      if (this.form.errors?.['passwordMismatch']) {
+      const c = this.form.controls;
+      if (c.nombreCompleto.invalid) {
+        if (c.nombreCompleto.errors?.['required']) {
+          this.mensaje.set('El nombre y apellido completo son obligatorios.');
+        } else if (c.nombreCompleto.errors?.['pattern']) {
+          this.mensaje.set('El nombre no debe contener números ni caracteres especiales.');
+        } else if (c.nombreCompleto.errors?.['maxlength']) {
+          this.mensaje.set('El nombre no debe exceder los 50 caracteres.');
+        }
+      } else if (c.email.invalid) {
+        if (c.email.errors?.['required']) {
+          this.mensaje.set('El correo electrónico es obligatorio.');
+        } else if (c.email.errors?.['pattern']) {
+          this.mensaje.set('El correo debe ser una dirección @gmail.com válida.');
+        } else if (c.email.errors?.['maxlength']) {
+          this.mensaje.set('El correo no debe exceder los 100 caracteres.');
+        }
+      } else if (c.password.invalid) {
+        this.mensaje.set(mensajeErrorPassword(c.password) ?? 'La contraseña es inválida.');
+      } else if (c.confirmPassword.invalid) {
+        this.mensaje.set('Confirma la contraseña.');
+      } else if (this.form.errors?.['passwordMismatch']) {
         this.mensaje.set('Las contraseñas no coinciden.');
+      } else if (c.telefono.invalid) {
+        this.mensaje.set('El teléfono debe tener exactamente 10 dígitos.');
+      } else if (c.especialidad.invalid) {
+        this.mensaje.set('Selecciona una especialidad.');
       } else {
         this.mensaje.set('Revisa los campos del formulario.');
       }

@@ -441,48 +441,324 @@ img {
   }
 }
 
-/* --- 8. FOOTER --- */
+/* --- 8. FOOTER (ESTILO KASHIO) --- */
 .main-footer {
-  background-color: #26388b; 
-  color: $blanco;
-  padding: 60px 0 20px;
+  background-color: #0b192c; /* Color oscuro similar a Kashio */
+  color: #fff;
+  padding: 80px 0 30px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   .footer-grid {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 50px;
     margin-bottom: 25px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
   }
 
-  .footer-logo-box img { width: 180px; }
-  
-  .footer-info, .footer-links {
-    h4 { font-size: 1.3rem; margin-bottom: 15px; font-weight: 700; }
-    p, a { color: $blanco; text-decoration: none; display: block; margin-bottom: 8px; font-size: 1rem; }
-  }
-  
-  .footer-bottom-bar {
+  .footer-column {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
 
-    .social-icons {
-      display: flex;
-      gap: 15px;
-      a img {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        transition: transform 0.3s;
-        &:hover { transform: scale(1.1); }
-      }
+    h4 { 
+      font-size: 1.15rem; 
+      margin-bottom: 20px; 
+      font-weight: 700; 
+      color: #fff;
     }
 
+    .mt-4 {
+      margin-top: 30px;
+    }
+
+    p, a { 
+      color: #c4cdd5; 
+      text-decoration: none; 
+      display: block; 
+      margin-bottom: 12px; 
+      font-size: 0.95rem; 
+      line-height: 1.5;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #fff;
+    }
+  }
+
+  .footer-logo-col {
+    .footer-logo { 
+      max-width: 160px; /* Corrección de ancho máximo en lugar de width fijo para prevenir deformación */
+      height: auto;
+      margin-bottom: 15px;
+    }
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px; /* Cuadros con bordes redondeados como Kashio */
+      color: #fff;
+      transition: all 0.3s ease;
+
+      &:hover { 
+        background-color: rgba(255, 255, 255, 0.25);
+        transform: translateY(-3px); 
+      }
+    }
+  }
+
+  .footer-bottom-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     .copyright {
+      font-size: 0.9rem;
+      color: #8895a7;
+      text-align: center;
+      font-weight: 500;
+    }
+  }
+}
+
+/* --- 9. MODAL VACANTES (ESTILO KASHIO) --- */
+.modal-backdrop-vacante {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px);
+}
+
+.modal-vacante-content {
+  background-color: #fff;
+  width: 95%;
+  max-width: 1000px;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.btn-close-vacante {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #777;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #000;
+  }
+}
+
+.vacante-header {
+  padding: 40px 40px 20px;
+  border-bottom: 1px solid #eee;
+
+  .vacante-titulo {
+    font-size: 2.2rem;
+    color: $azul-oscuro;
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .vacante-modalidad {
+    font-size: 1rem;
+    color: #555;
+    font-weight: 600;
+  }
+}
+
+.vacante-body {
+  padding: 30px 40px;
+  overflow-y: auto;
+  flex: 1;
+  color: #333;
+
+  .vacante-seccion {
+    margin-bottom: 25px;
+
+    h3 {
+      font-size: 1.3rem;
+      color: #000;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 10px;
+      text-align: justify;
+      white-space: pre-wrap; /* Mantiene los saltos de línea de textos sin viñetas */
+    }
+  }
+
+  .vacante-hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 25px 0;
+  }
+
+  .vacante-lista {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+
+      &::before {
+        content: "•";
+        color: $azul-oscuro;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+        top: 0px;
+        font-size: 1.2rem;
+      }
+      p { margin-bottom: 0; }
+    }
+  }
+}
+
+.vacante-footer {
+  padding: 20px 40px;
+  border-top: 1px solid #eee;
+  text-align: right;
+  background-color: #fafafa;
+
+  .btn-aplicar-vacante {
+    background-color: $azul-brillante;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: $azul-oscuro;
+    }
+  }
+}
+
+/* --- 10. RESPONSIVE DESIGN GLOBALES (Móviles y Tablets) --- */
+@media (max-width: 900px) {
+  /* Header y Navegación */
+  .main-header {
+    padding: 20px 0;
+    .header-container {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .main-nav ul {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      
+      .separator { display: none; }
+    }
+  }
+
+  /* Hero */
+  .hero-section {
+    .hero-image-fullwidth {
+      height: 450px;
+      .hero-overlay-gradient {
+        background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0) 80%);
+      }
+      .hero-text-container {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+    .hero-content {
+      padding: 40px 20px;
+      margin: 0 auto;
+      h1.hero-title { font-size: 2.2rem; }
+    }
+  }
+
+  /* Contenedores Flex (Sobre nosotros, Formulario) */
+  .about-section .about-container,
+  .training-section .training-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+
+  /* Novedades Grid */
+  .news-section .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Modal Vacantes */
+  .modal-vacante-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Novedades Grid Móvil */
+  .news-section .news-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-header .main-nav ul {
+    flex-direction: column;
+    width: 100%;
+    a { display: block; padding: 10px; width: 100%; background: #f9f9f9; border-radius: 8px; }
+    .btn-client-access { background: $azul-oscuro; color: $blanco; }
+  }
+
+  /* Formulario Campos 100% */
+  .training-section .training-form {
+    input, select, .fake-file-input {
       font-size: 1rem;
-      font-weight: 600;
+      padding: 14px 20px;
+    }
+    .btn-submit {
+      width: 100%;
     }
   }
 }

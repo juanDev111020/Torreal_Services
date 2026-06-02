@@ -49,8 +49,8 @@
                 </div>
                 <div class="news-body">
                   <h3>{{ n.titulo }}</h3>
-                  <p>{{ n.contenido }}</p>
-                  <a href="#formacion" class="btn-read" (click)="$event.preventDefault()">
+                  <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ obtenerDescripcion(n) }}</p>
+                  <a href="#" class="btn-read" (click)="$event.preventDefault(); abrirVacante(n)">
                     Ver mas <span class="arrow">&rarr;</span>
                   </a>
                 </div>
@@ -82,7 +82,7 @@
     </div>
   </section>
 
-  <section class="training-section">
+  <section class="training-section" id="formacion">
     <div class="container training-container">
       <div class="training-image">
         <img src="images/imagenFormulario.png" alt="Capacitación" class="img-fluid">
@@ -130,3 +130,105 @@
     </div>
   </section>
 </main>
+
+@if (modalVacanteAbierto() && vacanteActual(); as actual) {
+  <div class="modal-backdrop-vacante" (click)="cerrarVacante()">
+    <div class="modal-vacante-content" (click)="$event.stopPropagation()">
+      <button type="button" class="btn-close-vacante" (click)="cerrarVacante()" aria-label="Cerrar">&times;</button>
+      
+      <header class="vacante-header">
+        <h2 class="vacante-titulo">{{ actual.novedad.titulo }}</h2>
+        @if (actual.datos?.modalidad) {
+          <p class="vacante-modalidad">
+            <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 5px;">
+              <path d="M16 4.678a1 1 0 00-.437-.828L10.896.676A.995.995 0 009.778.672L9.765.68 5.877 3.54a.333.333 0 01-.394 0L1.59.694A1 1 0 000 1.5v9.823a1 1 0 00.437.828l4.667 3.174a1 1 0 001.117.004l.013-.01 3.888-2.858a.333.333 0 01.395 0l3.891 2.846A.999.999 0 0016 14.501V4.678zm-9.667.343a.333.333 0 01.134-.267L9.4 2.56a.167.167 0 01.267.134v8.287a.333.333 0 01-.134.267L6.6 13.442a.167.167 0 01-.267-.133V5.02zm-5-2.535a.167.167 0 01.267-.134L4.867 4.74a.333.333 0 01.136.267v8.32a.166.166 0 01-.176.167.168.168 0 01-.084-.028l-3.26-2.218a.333.333 0 01-.15-.275V2.486zm13.334 11.03a.167.167 0 01-.182.166.167.167 0 01-.085-.033l-3.267-2.388a.332.332 0 01-.133-.267v-8.32a.165.165 0 01.089-.146.168.168 0 01.172.009l3.26 2.217a.334.334 0 01.146.276v8.486z" fill="#182b52"/>
+            </svg>
+            {{ actual.datos?.modalidad }}
+          </p>
+        }
+      </header>
+
+      <div class="vacante-body">
+        @if (actual.datos) {
+          @if (actual.datos.quienesSomos) {
+            <div class="vacante-seccion">
+              <h3>¿Quiénes somos?</h3>
+              <p>{{ actual.datos.quienesSomos }}</p>
+            </div>
+            <hr class="vacante-hr" />
+          }
+          @if (actual.datos.aQuienBuscamos) {
+            <div class="vacante-seccion">
+              <h3>¿A quién buscamos?</h3>
+              <p>{{ actual.datos.aQuienBuscamos }}</p>
+            </div>
+            <hr class="vacante-hr" />
+          }
+          @if (actual.datos.queHaras) {
+            <div class="vacante-seccion">
+              <h3>¿Qué harás?</h3>
+              <ul class="vacante-lista">
+                @for (item of separarPorSaltos(actual.datos.queHaras); track item) {
+                  <li><p>{{ item }}</p></li>
+                }
+              </ul>
+            </div>
+            <hr class="vacante-hr" />
+          }
+          @if (actual.datos.requisitos) {
+            <div class="vacante-seccion">
+              <h3>Requisitos</h3>
+              <ul class="vacante-lista">
+                @for (item of separarPorSaltos(actual.datos.requisitos); track item) {
+                  <li><p>{{ item }}</p></li>
+                }
+              </ul>
+            </div>
+            <hr class="vacante-hr" />
+          }
+          @if (actual.datos.destacar) {
+            <div class="vacante-seccion">
+              <h3>Qué te haría destacar</h3>
+              <ul class="vacante-lista">
+                @for (item of separarPorSaltos(actual.datos.destacar); track item) {
+                  <li><p>{{ item }}</p></li>
+                }
+              </ul>
+            </div>
+            <hr class="vacante-hr" />
+          }
+          @if (actual.datos.condiciones) {
+            <div class="vacante-seccion">
+              <h3>Condiciones del trabajo</h3>
+              <ul class="vacante-lista">
+                @for (item of separarPorSaltos(actual.datos.condiciones); track item) {
+                  <li><p>{{ item }}</p></li>
+                }
+              </ul>
+            </div>
+            <hr class="vacante-hr" />
+          }
+          @if (actual.datos.ofrecemos) {
+            <div class="vacante-seccion">
+              <h3>¿Qué ofrecemos?</h3>
+              <ul class="vacante-lista">
+                @for (item of separarPorSaltos(actual.datos.ofrecemos); track item) {
+                  <li><p>{{ item }}</p></li>
+                }
+              </ul>
+            </div>
+          }
+        } @else {
+          <!-- Novedad antigua sin estructura JSON -->
+          <div class="vacante-seccion">
+            <p style="white-space: pre-wrap;">{{ actual.novedad.contenido }}</p>
+          </div>
+        }
+      </div>
+
+      <footer class="vacante-footer">
+        <button type="button" class="btn-aplicar-vacante" (click)="irAFormulario()">Inscríbete ahora</button>
+      </footer>
+    </div>
+  </div>
+}

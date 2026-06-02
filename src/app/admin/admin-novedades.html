@@ -13,27 +13,90 @@
     </p>
   }
 
-  <div class="admin-card form-novedad">
-    <h2>Nueva novedad</h2>
+  <form class="admin-card form-novedad" [formGroup]="novedadForm" (ngSubmit)="publicar()">
+    <h2>Nueva novedad / Vacante</h2>
+    <p style="margin-bottom: 20px; color: #666;">Completa los campos. Las secciones como "Requisitos" se mostrarán como listas si usas saltos de línea.</p>
+    
     <label class="campo">
-      <span>Título</span>
-      <input type="text" [(ngModel)]="titulo" placeholder="Ej. Oportunidad de trabajo" />
+      <span>Título <span style="color:red">*</span></span>
+      <input type="text" formControlName="titulo" placeholder="Ej. Business Development Manager - Perú" maxlength="30" />
+      <small>Máximo 30 caracteres.</small>
+      @if (novedadForm.controls.titulo.touched && novedadForm.controls.titulo.invalid) {
+        <span class="campo-error" style="color:red; font-size:0.85em;">
+          {{ novedadForm.controls.titulo.errors?.['maxlength'] ? 'Máximo 30 caracteres.' : 'El título es obligatorio.' }}
+        </span>
+      }
     </label>
+
     <label class="campo">
-      <span>Descripción</span>
-      <textarea [(ngModel)]="contenido" rows="3" placeholder="Texto que verán los visitantes"></textarea>
+      <span>Modalidad / Ubicación <span style="color:red">*</span></span>
+      <input type="text" formControlName="modalidad" placeholder="Ej. Híbrido (Perú)" maxlength="30" />
+      <small>Máximo 30 caracteres. Sin números.</small>
+      @if (novedadForm.controls.modalidad.touched && novedadForm.controls.modalidad.invalid) {
+        <span class="campo-error" style="color:red; font-size:0.85em;">
+          {{ novedadForm.controls.modalidad.errors?.['pattern'] ? 'No debe contener números.' : 'Obligatorio y máx 30 caracteres.' }}
+        </span>
+      }
     </label>
+
     <label class="campo">
-      <span>Imagen</span>
+      <span>Descripción Corta (Tarjeta inicio) <span style="color:red">*</span></span>
+      <textarea formControlName="descripcionCorta" rows="2" placeholder="Resumen corto que verán en el carrusel de inicio."></textarea>
+      @if (novedadForm.controls.descripcionCorta.touched && novedadForm.controls.descripcionCorta.invalid) {
+        <span class="campo-error" style="color:red; font-size:0.85em;">Obligatorio.</span>
+      }
+    </label>
+
+    <h3 style="margin-top:20px; font-size: 1.1em; color: var(--color-primario);">Detalle de la vacante (Opcionales)</h3>
+    <p style="margin-bottom: 15px; font-size:0.9em; color:#777;">Si dejas un campo vacío, la sección no se mostrará en el modal.</p>
+
+    <label class="campo">
+      <span>¿Quiénes somos?</span>
+      <textarea formControlName="quienesSomos" rows="3" placeholder="En Torreal desarrollamos..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>¿A quién buscamos?</span>
+      <textarea formControlName="aQuienBuscamos" rows="3" placeholder="Buscamos un perfil..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>¿Qué harás? (Viñetas automáticas por salto de línea)</span>
+      <textarea formControlName="queHaras" rows="4" placeholder="Prospectar y desarrollar...&#10;Investigar...&#10;Presentar..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>Requisitos (Viñetas automáticas por salto de línea)</span>
+      <textarea formControlName="requisitos" rows="4" placeholder="+3 años de experiencia...&#10;Dominio de inglés..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>Qué te haría destacar (Viñetas automáticas)</span>
+      <textarea formControlName="destacar" rows="3" placeholder="Mentalidad Hunter..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>Condiciones (Viñetas automáticas)</span>
+      <textarea formControlName="condiciones" rows="3" placeholder="Contrato a 3 meses...&#10;Trabajo remoto..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>¿Qué ofrecemos? (Viñetas automáticas)</span>
+      <textarea formControlName="ofrecemos" rows="3" placeholder="Un entorno dinámico..."></textarea>
+    </label>
+
+    <label class="campo">
+      <span>Imagen de portada <span style="color:red">*</span></span>
       <input type="file" accept="image/*" (change)="onImagen($event)" />
       @if (nombreImagen) {
         <small>{{ nombreImagen }}</small>
       }
     </label>
-    <button type="button" class="admin-btn admin-btn--prim" [disabled]="enviando()" (click)="publicar()">
-      {{ enviando() ? 'Publicando…' : 'Publicar novedad' }}
+
+    <button type="submit" class="admin-btn admin-btn--prim" [disabled]="enviando()">
+      {{ enviando() ? 'Publicando…' : 'Publicar vacante / novedad' }}
     </button>
-  </div>
+  </form>
 
   <h2 class="subtitulo">Novedades publicadas</h2>
   @if (cargando()) {
@@ -47,7 +110,7 @@
           </div>
           <div class="preview-body">
             <h3>{{ n.titulo }}</h3>
-            <p>{{ n.contenido }}</p>
+            <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ n.contenido }}</p>
             <button type="button" class="admin-btn admin-btn--danger" (click)="abrirModalEliminar(n)">
               Eliminar
             </button>

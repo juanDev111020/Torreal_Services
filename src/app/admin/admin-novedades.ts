@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AdminApiService } from '../core/admin-api.service';
 import { mensajeErrorApi } from '../core/api-error-message';
@@ -8,11 +8,12 @@ import { NovedadPublica, urlArchivoSubido } from '../core/novedades-api.service'
 @Component({
   selector: 'app-admin-novedades',
   standalone: true,
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './admin-novedades.html',
   styleUrl: './admin-novedades.scss',
 })
 export class AdminNovedades implements OnInit {
+  private readonly fb = inject(NonNullableFormBuilder);
   private readonly api = inject(AdminApiService);
 
   readonly cargando = signal(true);
@@ -26,8 +27,19 @@ export class AdminNovedades implements OnInit {
   readonly novedadAEliminar = signal<NovedadPublica | null>(null);
   readonly eliminando = signal(false);
 
-  titulo = '';
-  contenido = '';
+  novedadForm = this.fb.group({
+    titulo: ['', [Validators.required, Validators.maxLength(30)]],
+    modalidad: ['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[^0-9]*$/)]],
+    descripcionCorta: ['', Validators.required],
+    quienesSomos: [''],
+    aQuienBuscamos: [''],
+    queHaras: [''],
+    requisitos: [''],
+    destacar: [''],
+    condiciones: [''],
+    ofrecemos: ['']
+  });
+
   imagen: File | null = null;
   nombreImagen = '';
 
@@ -59,21 +71,35 @@ export class AdminNovedades implements OnInit {
   }
 
   publicar(): void {
-    const t = this.titulo.trim();
-    const c = this.contenido.trim();
-    if (!t || !c || !this.imagen) {
+    if (this.novedadForm.invalid || !this.imagen) {
+      this.novedadForm.markAllAsTouched();
       this.mensajeEsError.set(true);
-      this.mensaje.set('Completa título, descripción e imagen.');
+      this.mensaje.set('Completa los campos obligatorios e incluye una imagen.');
       return;
     }
+    const raw = this.novedadForm.getRawValue();
+    const tituloStr = raw.titulo.trim();
+    
+    // Crear el objeto JSON que se guardará en la base de datos
+    const vacanteJSON = JSON.stringify({
+      modalidad: raw.modalidad.trim(),
+      descripcionCorta: raw.descripcionCorta.trim(),
+      quienesSomos: raw.quienesSomos.trim(),
+      aQuienBuscamos: raw.aQuienBuscamos.trim(),
+      queHaras: raw.queHaras.trim(),
+      requisitos: raw.requisitos.trim(),
+      destacar: raw.destacar.trim(),
+      condiciones: raw.condiciones.trim(),
+      ofrecemos: raw.ofrecemos.trim(),
+    });
+
     this.enviando.set(true);
     this.mensaje.set(null);
-    this.api.crearNovedad(t, c, this.imagen).subscribe({
+    this.api.crearNovedad(tituloStr, vacanteJSON, this.imagen).subscribe({
       next: () => {
         this.enviando.set(false);
         this.mensajeEsError.set(false);
-        this.titulo = '';
-        this.contenido = '';
+        this.novedadForm.reset();
         this.imagen = null;
         this.nombreImagen = '';
         this.mensaje.set('Novedad publicada. Ya aparece en el inicio.');
